@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>First-month product analytics</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>First-month product analytics</h1>
+    <p class="tagline">Sample dataset → interactive dashboard → <strong>live deployment</strong></p>
+    <p class="note"><strong>The story:</strong> A new subscription app launched in January 2024. This page shows how many people finished signing up, which features they used, and whether they came back. The data is a sample of 1,000 users, and rates are shown with the number of users behind them because small groups are noisy.</p>
+  </header>
+
+  <main>
+    <!-- FILTERS: one row, they scope everything below -->
+    <section class="filters" aria-label="Filters">
+      <label>Device <select id="f-device"></select></label>
+      <label>Region <select id="f-region"></select></label>
+      <label>Referral source <select id="f-referral"></select></label>
+      <label>Feature <select id="f-feature"></select></label>
+      <label>Subscription <select id="f-subscribed">
+        <option value="">All users</option>
+        <option value="1">Subscribed</option>
+        <option value="0">Not subscribed</option>
+      </select></label>
+      <button id="reset" type="button">Reset</button>
+    </section>
+
+    <!-- HEADLINE NUMBERS -->
+    <section class="kpis" aria-label="Key numbers" id="kpis"></section>
+
+    <!-- FUNNEL -->
+    <section class="card" aria-labelledby="h-funnel">
+      <h2 id="h-funnel">Where people drop out (app signup)</h2>
+      <p class="sub">Share of users who reached each step of the sign-up funnel.</p>
+      <div id="funnel" class="bars"></div>
+    </section>
+
+    <!-- RETENTION -->
+    <section class="card" aria-labelledby="h-retention">
+      <h2 id="h-retention">Do they come back?</h2>
+      <p class="sub">Share of users who returned after 1, 7 and 30 days.</p>
+      <div id="retention" class="bars"></div>
+    </section>
+
+    <!-- SEGMENTS -->
+    <section class="card" aria-labelledby="h-segments">
+      <h2 id="h-segments">Compare groups</h2>
+      <div class="segment-controls">
+        <label>Measure <select id="seg-measure">
+          <option value="completed">Completed the funnel</option>
+          <option value="subscribed">Subscribed</option>
+          <option value="day7">Came back after 7 days</option>
+          <option value="day30">Came back after 30 days</option>
+        </select></label>
+        <label>Compare by <select id="seg-dimension">
+          <option value="device">Device</option>
+          <option value="region">Region</option>
+          <option value="referral">Referral source</option>
+          <option value="feature">Feature</option>
+          <option value="subscribed">Subscription</option>
+        </select></label>
+      </div>
+      <p class="sub" id="seg-sub"></p>
+      <div id="segments" class="bars"></div>
+      <p class="caution" id="seg-caution"></p>
+    </section>
+
+    <!-- FINDINGS: add one <li> per finding -->
+    <section class="card" aria-labelledby="h-findings">
+      <h2 id="h-findings">What the data shows</h2>
+      <p class="obs-title"><strong>Write in your observations:</strong></p>
+      <form id="obs-form" class="obs-form">
+        <label for="obs-text" class="sr-only">Your observation</label>
+        <textarea id="obs-text" rows="3" maxlength="500" placeholder="What do you notice in the charts above?"></textarea>
+        <button type="submit">Add observation</button>
+      </form>
+      <!-- The first item is an example; your own observations are added below it. -->
+      <ul class="findings">
+        <li>Most users drop out of the funnel, and no single trait we measured strongly predicts who completes or who stays.</li>
+        <li>Subscribers finished the funnel slightly more often than non-subscribers (12.3% vs. 8.9% across all 1,000 users), but the gap is small enough that chance could explain it.</li>
+      </ul>
+      <ul id="obs-list" class="findings"></ul>
+      <p class="caution" id="obs-note">Observations are saved in this browser only. They are not shared with anyone else.</p>
+    </section>
+  </main>
+
+  <footer>Built from three sample CSVs (customers, funnel sessions, feature adoption) joined on User ID.</footer>
+
+  <div id="tip" role="tooltip" hidden></div>
+
+  <script src="data/users.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
