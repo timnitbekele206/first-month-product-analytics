@@ -335,6 +335,21 @@ function render() {
   renderSegments(users);
 }
 
+// ---------- Tabs: the URL hash picks the view (#report, anything else = dashboard) ----------
+function showView() {
+  const onReport = location.hash === "#report";
+  $("view-dashboard").hidden = onReport;
+  $("view-report").hidden = !onReport;
+  for (const [id, on] of [["tab-dashboard", !onReport], ["tab-report", onReport]]) {
+    if (on) $(id).setAttribute("aria-current", "page");
+    else $(id).removeAttribute("aria-current");
+  }
+  hideTip();
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", showView);
+
 setupFilters();
 setupObservations();
 render();
+showView();
